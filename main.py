@@ -1,9 +1,15 @@
 import settings
 import discord
 from discord.ext import commands
+import asyncio
 
-def run():
-    bot = commands.Bot(command_prefix="!", intents=discord.Intents.default())
+intents = discord.Intents.all()
+intents.members = True
+intents.message_content = True
+
+
+async def start_bot():
+    bot = commands.Bot(command_prefix="!", intents=intents)
 
     @bot.event
     async def on_ready():
@@ -11,7 +17,13 @@ def run():
         print(bot.user.id)
         print("-----------")
 
-    bot.run(settings.DISCORD_API_SECRET)
+    await bot.load_extension('cogs.commands_cog')
+    await bot.start(settings.DISCORD_API_SECRET)
+
+
+def run():
+    asyncio.run(start_bot())
+
 
 if __name__ == "__main__":
     run()

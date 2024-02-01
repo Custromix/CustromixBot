@@ -8,16 +8,40 @@ DISCORD_API_SECRET = os.getenv('DISCORD_API_TOKEN')
 LOGGING_CONFIG = {
     "version": 1,
     "disable_existing_loggers": False,
-    "formatters":{
-        "verbose":{
-            "format"
+    "formatters": {
+        "standard": {
+            "format": "[%(asctime)s] %(levelname)s:%(name)s: %(message)s"
         }
     },
-    "handlers":{
-
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "standard"
+        },
+        "console2": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "standard"
+        },
+        "file": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": "logs/discord.log",
+            "formatter": "standard"
+        }
     },
-    "loggers":{
-
+    "loggers": {
+        "bot": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False
+        },
+        "discord": {
+            "handlers": ["console2", "file"],
+            "level": "INFO",
+            "propagate": False
+        }
     }
 }
 
